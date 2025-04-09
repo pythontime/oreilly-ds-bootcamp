@@ -1,4 +1,4 @@
-.PHONY: help push lab01 lab02 lab03 lab04 jupyterlite-build jupyterlite-serve
+.PHONY: help push lab01 lab02 lab03 lab04 build serve clean
 
 TODAY := $(shell date +"%m-%d")
 
@@ -11,28 +11,34 @@ push: ## pushes changes to git
 	git pull origin main
 	git push origin main
 
+lab: ## starts jupyterlab
+	uv run jupyter lab
+
 lab01: ## lab01
-	otter assign --no-run-tests src/lab01/lab01.ipynb .otter-build
-	mkdir -p lab01
-	mv .otter-build/student/* lab01/
-	rm -rf .otter-build
+	rm -rf labs/lab01
+	uv run otter assign --no-run-tests src/lab01/lab01.ipynb .otter-build
+	mkdir -p labs/lab01
+	mv .otter-build/student/* labs/lab01/
+	rm -rf .otter-build labs/lab01/tests
 
 lab03: ## lab03
-	otter assign --no-run-tests src/lab03/lab03.ipynb .otter-build
-	mkdir -p lab03
-	mv .otter-build/student/* lab03/
-	rm -rf .otter-build lab03/tests
+	uv run otter assign --no-run-tests src/lab03/lab03.ipynb .otter-build
+	mkdir -p labs/lab03
+	mv .otter-build/student/* labs/lab03/
+	rm -rf .otter-build labs/lab03/tests
 
 lab04: ## lab04
-	otter assign --no-run-tests src/lab04/lab04.ipynb .otter-build
-	mkdir -p lab04
-	mv .otter-build/student/* lab04/
-	rm -rf .otter-build
+	uv run otter assign --no-run-tests src/lab04/lab04.ipynb .otter-build
+	mkdir -p labs/lab04
+	mv .otter-build/student/* labs/lab04/
+	rm -rf .otter-build labs/lab04/tests
 
-jupyterlite-build: ## Build the JupyterLite site for in-browser notebooks
+build: ## Build the JupyterLite site for in-browser notebooks
 	uv sync
-	# Assuming notebooks are in content/ and output should go to labs/
-	.venv/bin/jupyter lite build --contents content --output-dir labs
+	uv run jupyter lite build --contents labs --output-dir dist
 
-jupyterlite-serve: jupyterlite-build ## Serve the built JupyterLite site locally
-	.venv/bin/jupyter lite serve --port 8000 --root labs
+serve: ## Serve the built JupyterLite site locally
+	cd dist && uv run jupyter lite serve --port 8000
+
+clean: ## Remove the JupyterLite build directory
+	rm -rf dist
