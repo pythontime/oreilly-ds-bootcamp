@@ -1,4 +1,4 @@
-.PHONY: help push lab01 lab02 lab03 lab04
+.PHONY: help push lab01 lab02 lab03 lab04 jupyterlite-build jupyterlite-serve
 
 TODAY := $(shell date +"%m-%d")
 
@@ -28,3 +28,11 @@ lab04: ## lab04
 	mkdir -p lab04
 	mv .otter-build/student/* lab04/
 	rm -rf .otter-build
+
+jupyterlite-build: ## Build the JupyterLite site for in-browser notebooks
+	uv sync
+	# Assuming notebooks are in content/ and output should go to labs/
+	.venv/bin/jupyter lite build --contents content --output-dir labs
+
+jupyterlite-serve: jupyterlite-build ## Serve the built JupyterLite site locally
+	.venv/bin/jupyter lite serve --port 8000 --root labs
