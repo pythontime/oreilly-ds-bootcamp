@@ -1,12 +1,15 @@
 """
-Imports and functions that all bootcamp labs use by default.
+Configuration that bootcamp labs use by default.
+
+Note: If we're using Pyodide, then all packages need to imported BEFORE
+importing this file since for some reason Pyodide doesn't like it when imported
+files also import packages.
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import ipywidgets as widgets
-from ipywidgets import interact, interactive, fixed, interact_manual
 from IPython import get_ipython
 from IPython.display import display, set_matplotlib_formats, HTML
 
@@ -41,7 +44,7 @@ plt.rcParams["figure.figsize"] = (4, 3)
 np.set_printoptions(threshold=20, precision=2, suppress=True)
 pd.set_option("display.max_rows", 7)
 pd.set_option("display.max_columns", 8)
-pd.set_option("precision", 2)
+pd.set_option("display.precision", 2)
 # stops scientific notation for pandas
 # pd.set_option('display.float_format', '{:.2f}'.format)
 
@@ -50,7 +53,9 @@ def display_df(
     df, rows=pd.options.display.max_rows, cols=pd.options.display.max_columns
 ):
     """Displays n rows and cols from df"""
-    with pd.option_context("display.max_rows", rows, "display.max_columns", cols):
+    with pd.option_context(
+        "display.max_rows", rows, "display.max_columns", cols
+    ):
         display(df)
 
 
@@ -78,7 +83,9 @@ def df_interact(df, nrows=7, ncols=7):
     if len(df.columns) <= ncols:
         interact(peek, row=(0, len(df), nrows), col=fixed(0))
     else:
-        interact(peek, row=(0, len(df), nrows), col=(0, len(df.columns) - ncols))
+        interact(
+            peek, row=(0, len(df), nrows), col=(0, len(df.columns) - ncols)
+        )
     print("({} rows, {} columns) total".format(df.shape[0], df.shape[1]))
 
 

@@ -1,6 +1,7 @@
 # custom ignores for us
 build/
 co2_mm_mlo.txt
+.jupyterlite.doit.db
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,python
@@ -12,7 +13,8 @@ co2_mm_mlo.txt
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
