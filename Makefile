@@ -12,7 +12,7 @@ push: ## pushes changes to git
 	git push origin main
 
 lab: ## starts jupyterlab
-	uv run jupyter lab
+	uv run --all-extras jupyter lab
 
 lab01: ## lab01
 	rm -rf labs/lab01
