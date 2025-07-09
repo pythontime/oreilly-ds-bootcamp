@@ -11,7 +11,7 @@ push: ## pushes changes to git
 	git pull origin main
 	git push origin main
 
-lab: ## starts jupyterlab
+lab: ## starts jupyterlab, used when live coding since sam wants vim-mode
 	uv run --all-extras jupyter lab
 
 lab01: ## lab01
